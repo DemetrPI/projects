@@ -18,14 +18,25 @@ spec:
           resources:
             limits:
               memory: "256Mi"
-              cpu: "500m"          
+              cpu: "500m"
           env:
+            - name: PMA_HOST
+              value: mysql-service
             - name: MYSQL_ROOT_PASSWORD
               valueFrom:
                 secretKeyRef:
                   name: mysql-secret
                   key: mysql-root-password
-              
+            - name: MYSQL_USER
+              valueFrom:
+                secretKeyRef:
+                  name: mysql-secret
+                  key: mysql-username
+            - name: MYSQL_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: mysql-secret
+                  key: mysql-password
 ---
 apiVersion: v1
 kind: Service
@@ -38,5 +49,3 @@ spec:
     - protocol: TCP
       port: 80
       targetPort: 80
-  type: LoadBalancer
-

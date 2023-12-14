@@ -21,20 +21,20 @@ spec:
               cpu: "5000m"
           env:
             - name: MYSQL_ROOT_PASSWORD
-              value: dmytro
-            #     secretKeyRef:
-            #       name: mysql-secret
-            #       key: mysql-root-password
-            # # - name: MYSQL_USER
-            #   valueFrom:
-            #     secretKeyRef:
-            #       name: mysql-secret
-            #       key: mysql-username
-            # - name: MYSQL_PASSWORD
-            #   valueFrom:
-            #     secretKeyRef:
-            #       name: mysql-secret
-            #       key: mysql-password
+              valueFrom:
+                secretKeyRef:
+                  name: mysql-secret
+                  key: mysql-root-password
+            - name: MYSQL_USER
+              valueFrom:
+                secretKeyRef:
+                  name: mysql-secret
+                  key: mysql-username
+            - name: MYSQL_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: mysql-secret
+                  key: mysql-password
           ports:
             - containerPort: 3306
 ---
@@ -45,7 +45,6 @@ metadata:
 spec:
   selector:
     app: mysql
-  type: LoadBalancer
   ports:
     - protocol: TCP
       port: 3306

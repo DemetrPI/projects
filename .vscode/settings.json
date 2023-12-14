@@ -1,0 +1,8 @@
+{
+    "yaml.schemas": {
+        "kubernetes://schema/apps/v1%40deployment": [
+            "file:///Users/dpishchenkov/projects/mongodb-deploy.yaml",
+            "file:///Users/dpishchenkov/projects/mongo-express.yaml"
+        ]
+    }
+}

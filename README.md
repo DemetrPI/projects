@@ -13,7 +13,8 @@ This repository contains configurations for deploying MySQL and phpMyAdmin on a 
 - [MongoDB Configmap](mongo-configmap.yaml): Configmap for MongoDB+Mongo Express.
 - [Mongo Express Deployment](mongo-express.yaml): Deployment and service configuration for Mongo-Express.
 - [NGINX deployment](nginx-deployment.yaml): NGINX deployment
-- [NGINX service](nginx-service.yaml): NGINX service
+- [NGINX service](nginx-service.yaml): NGINX service.
+- [Ingress for phpmyadmin](phpmyadmin-ingress.yaml): Ingress for accessing phpmyadmin dashboard.
 
 ## Usage
 
@@ -25,7 +26,10 @@ This repository contains configurations for deploying MySQL and phpMyAdmin on a 
 ./deploy.sh
 ```
 
-## Access phpMyAdmin using the Minikube IP and NodePort.
+## Access phpMyAdmin using Ingress
+To access phpMyAdmin using external IP or host in Minikube, first run `minikube addons enable ingress` to enable Ingress in Minikube.
+If using docker, you need to create a tunnel (https://minikube.sigs.k8s.io/docs/commands/tunnel/#synopsis) `minikube tunnel` to get access to exposed services using external IP or host. Docker uses 127.0.0.1 by default. 
+
 
 **Important Notes**
 The MySQL credentials are stored in a Secret (mysql-secret.yaml). Make sure to encode sensitive information using base64.

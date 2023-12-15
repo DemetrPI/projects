@@ -17,8 +17,6 @@ kubectl apply -f mysql-deployment.yaml
 # Apply phpMyAdmin Deployment and Service
 kubectl apply -f php-myadmin-deploy.yaml
 
-sleep 2
-
 # Check pod status
 check_pod_status() {
   local namespace=$1
@@ -27,8 +25,9 @@ check_pod_status() {
   local timeout=$4
   local start_time=$(date +%s)
 
-  while :
-  do
+  while :; do
+
+  sleep 3
     local current_time=$(date +%s)
     local elapsed_time=$((current_time - start_time))
 
@@ -42,12 +41,10 @@ check_pod_status() {
       break
     fi
 
-    sleep 1
+    
   done
 }
 
 # Check pod status in the default namespace
 check_pod_status default app=mysql 1 120
 check_pod_status default app=phpmyadmin 1 120
-
-

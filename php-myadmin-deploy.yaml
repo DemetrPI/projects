@@ -1,24 +1,38 @@
+# Define a Kubernetes Deployment for PHPMyAdmin
 apiVersion: apps/v1
 kind: Deployment
 metadata:
+  # Name of the Deployment resource
   name: phpmyadmin-deployment
+
 spec:
-  replicas: 1
+  # Set the number of replicas for the Deployment
+  replicas: 2
+  
+  # Define the selector to match labels for pods
   selector:
     matchLabels:
       app: phpmyadmin
+      
+  # Define the pod template
   template:
     metadata:
       labels:
         app: phpmyadmin
     spec:
+      # Define the containers within the pod
       containers:
         - name: phpmyadmin-container
+          # Use the PHPMyAdmin image
           image: phpmyadmin/phpmyadmin:latest
+          
+          # Set resource limits for the container
           resources:
             limits:
               memory: "256Mi"
               cpu: "500m"
+          
+          # Define environment variables for PHPMyAdmin configuration
           env:
             - name: PMA_HOST
               value: mysql-service
@@ -37,14 +51,24 @@ spec:
                 secretKeyRef:
                   name: mysql-secret
                   key: mysql-password
+
+# Define a Kubernetes Service for PHPMyAdmin
 ---
 apiVersion: v1
 kind: Service
 metadata:
+  # Name of the Service resource
   name: phpmyadmin-service
+  
 spec:
+  # Select pods with the label 'app: phpmyadmin'
   selector:
     app: phpmyadmin
+    
+  # Define the service type as LoadBalancer
+  type: LoadBalancer
+  
+  # Define ports for the service
   ports:
     - protocol: TCP
       port: 80

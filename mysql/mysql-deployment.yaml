@@ -1,36 +1,21 @@
-# Define a Kubernetes Deployment for MySQL
 apiVersion: apps/v1
-kind: Deployment
+kind: StatefulSet
 metadata:
   name: mysql-deployment
 spec:
-  # Set the number of replicas for the Deployment
-  replicas: 2
-  
-  # Define the selector to match labels for pods
+  replicas: 1
+  serviceName: mysql-service
   selector:
     matchLabels:
       app: mysql
-      
-  # Define the pod template
   template:
     metadata:
       labels:
         app: mysql
     spec:
-      # Define the containers within the pod
       containers:
         - name: mysql-container
-          # Use the MySQL image
-          image: mysql
-          
-          # Set resource limits for the container
-          resources:
-            limits:
-              memory: "1024Mi"
-              cpu: "5000m"
-          
-          # Define environment variables for MySQL configuration
+          image: mysql  
           env:
             - name: MYSQL_ROOT_PASSWORD
               valueFrom:
@@ -47,23 +32,23 @@ spec:
                 secretKeyRef:
                   name: mysql-secret
                   key: mysql-password
-          
-          # Expose port 3306 within the container
           ports:
             - containerPort: 3306
-
-# Define a Kubernetes Service for MySQL
+          volumeMounts:
+            - name: mysql-data
+              mountPath: /var/lib/mysql
+      volumes:
+        - name: mysql-data
+          persistentVolumeClaim:
+            claimName: mysql-data
 ---
 apiVersion: v1
 kind: Service
 metadata:
   name: mysql-service
 spec:
-  # Select pods with the label 'app: mysql'
   selector:
     app: mysql
-    
-  # Define ports for the service
   ports:
     - protocol: TCP
       port: 3306

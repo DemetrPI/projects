@@ -20,10 +20,10 @@ metadata:
   namespace: kubernetes-dashboard
 spec:
   rules:
-    - host: dashboard.com
+    - host: dashboard-k8s.com
       http:
         paths:
-          - path: /
+          - path: /k8s
             pathType: Prefix
             backend:
               service:
